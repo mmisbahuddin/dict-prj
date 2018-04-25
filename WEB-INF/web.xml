@@ -22,13 +22,13 @@
 	   <welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	
-	<!-- Using Tomcat Data Source define under Tomcat home context or server.xml 
+	<!-- Using Tomcat Data Source define under Tomcat home context or server.xml -->
 	<resource-ref>
 	   <description>DB Connection</description>
 	   <res-ref-name>jdbc/dictionary</res-ref-name>
 	   <res-type>javax.sql.DataSource</res-type>
 	   <res-auth>Container</res-auth>
 	</resource-ref>
-	-->
+	
 	
 </web-app>

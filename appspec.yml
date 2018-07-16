@@ -1,8 +1,5 @@
 version: 0.0
 os: linux 
-files:
-  - source: config/setenv.txt
-    destination: /usr/share/tomcat/conf/
 hooks:
   BeforeInstall:
     - location: scripts/before_install.sh

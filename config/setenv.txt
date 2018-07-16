@@ -1,1 +1,1 @@
-JAVA_OPTS="-DLogFilePath=/tmp/apps/logs/ -Dsql.server.host=localhost -Dsql.server.schema=dictionaryDB -Dsql.server.user=root -Dsql.server.pwd=Nimda89012*"
+JAVA_OPTS="-DLogFilePath=/tmp/apps/logs/ -Dsql.server.host=shdbinstance.chdmaakljf35.us-east-2.rds.amazonaws.com -Dsql.server.schema=dictionaryDB -Dsql.server.user=admin -Dsql.server.pwd=Nimda89012*"

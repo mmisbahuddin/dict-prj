@@ -23,22 +23,22 @@ var DEFINITION_PREFIX = "definition-";
 function createXMLHttpRequest() {
     if (window.ActiveXObject) {
         xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-    } 
+    }
     else if (window.XMLHttpRequest) {
         xmlHttp = new XMLHttpRequest();
     }
 }
 
-//Search Action Method    
+//Search Action Method
 function searchEntries() {
 	searchText = document.getElementById("search_text").value;
     action = "search";
     if(searchText == "") {
         return;
     }
-    
-    var url ="manageDictionary?" 
-        + createSearchQueryString(searchText, action) 
+
+    var url ="manageDictionary?"
+        + createSearchQueryString(searchText, action)
         + "&ts=" + new Date().getTime();
     createXMLHttpRequest();
     xmlHttp.onreadystatechange = handleSearchStateChange;
@@ -81,7 +81,7 @@ function renderSearchList() {
     	var unsortedRow = list[i];
     	dictionaryList.removeChild(unsortedRow);
     }
-    
+
    var dictionaryEntries = xmlHttp.responseXML.getElementsByTagName("dict");
    for(var j=0; j < dictionaryEntries.length; j++){
    		var dictionary = dictionaryEntries.item(j).childNodes;
@@ -100,23 +100,23 @@ function renderSearchList() {
    		}
    		addEntry(aId, aWord, aDefinition);
     }
-    
+
     updateDictionaryManagementServletVisibility();
 }
 
-//Update Definition Method    
+//Update Definition Method
 function updateDefinition(uniqueID) {
     definitionElement = document.getElementById(DEFINITION_PREFIX + uniqueID).value;
     action = "update";
     if(uniqueID == "") {
         return;
     }
-    
+
     updateUniqueID = uniqueID;
     updateDefinitionElement = definitionElement;
-    
-    var url ="manageDictionary?" 
-        + createUpdateQueryString(uniqueID, definitionElement, "update") 
+
+    var url ="manageDictionary?"
+        + createUpdateQueryString(uniqueID, definitionElement, "update")
         + "&ts=" + new Date().getTime();
     createXMLHttpRequest();
     xmlHttp.onreadystatechange = handleUpdateStateChange;
@@ -125,12 +125,12 @@ function updateDefinition(uniqueID) {
 }
 
 function createUpdateQueryString(uniqueID, definitionElement, action) {
-    var queryString = "uniqueID=" + uniqueID 
+    var queryString = "uniqueID=" + uniqueID
         + "&definitionElement=" + definitionElement
         + "&action=" + action;
     return queryString;
 }
-    
+
 function handleUpdateStateChange() {
     if(xmlHttp.readyState == 4) {
         if(xmlHttp.status == 200) {
@@ -158,20 +158,20 @@ function updateDefinitionElementInList(uniqueID, definitionElement) {
     }else{
     	renderMessage("Dictionary definition element updated successfully!", true);
     }
-    
+
     document.getElementById(DEFINITION_PREFIX + updateUniqueID).value = updateDefinitionElement;
-    
+
     updateDictionaryManagementServletVisibility();
 }
 
-//Add Action Method    
+//Add Action Method
 function addEntries() {
 	word = document.getElementById("word").value;
     definition = document.getElementById("definition").value;
     action = "add";
-    
-    var url ="manageDictionary?" 
-        + createAddQueryString(word, definition, "add") 
+
+    var url ="manageDictionary?"
+        + createAddQueryString(word, definition, "add")
         + "&ts=" + new Date().getTime();
     createXMLHttpRequest();
     xmlHttp.onreadystatechange = handleAddStateChange;
@@ -180,12 +180,12 @@ function addEntries() {
 }
 
 function createAddQueryString(word, definition, action) {
-    var queryString = "word=" + word 
+    var queryString = "word=" + word
         + "&definition=" + definition
         + "&action=" + action;
     return queryString;
 }
-    
+
 function handleAddStateChange() {
     if(xmlHttp.readyState == 4) {
         if(xmlHttp.status == 200) {
@@ -201,12 +201,12 @@ function handleAddStateChange() {
 //Delete Action Method
 function deleteEntry(id) {
     deleteID = id;
-    
-    var url = "manageDictionary?" 
-        + "action=delete" 
+
+    var url = "manageDictionary?"
+        + "action=delete"
         + "&id=" + id
         + "&ts=" + new Date().getTime();
-        
+
     createXMLHttpRequest();
     xmlHttp.onreadystatechange = handleDeleteStateChange;
     xmlHttp.open("GET", url, true);
@@ -228,12 +228,12 @@ function handleDeleteStateChange() {
 //Sort Action Method
 function sortEntry(position) {
 	var direction = "0";
-    var url = "manageDictionary?" 
-        + "action=sort" 
+    var url = "manageDictionary?"
+        + "action=sort"
         + "&orderBy=" + position
         + "&sortDirection=" + direction
         + "&ts=" + new Date().getTime();
-        
+
     createXMLHttpRequest();
     xmlHttp.onreadystatechange = handleSortStateChange;
     xmlHttp.open("GET", url, true);
@@ -288,30 +288,30 @@ function addEntry(aId, aWord, aDefinition) {
 	    top.style.backgroundColor = "#cccccc";
 	    document.getElementById("headList").appendChild(top);
     }
-    
+
     var row = document.createElement("tr");
     var uniqueID = aId;
     row.setAttribute("id", DICT_PREFIX + uniqueID);
     row.setAttribute("align", "center");
-    
+
     row.appendChild(createCellWithText(uniqueID));
     row.appendChild(createCellWithText(aWord));
     var definitionText = document.createElement("input");
     definitionText.setAttribute("type", "text");
     definitionText.setAttribute("value", aDefinition);
     definitionText.setAttribute("id", DEFINITION_PREFIX + uniqueID);
-    
+
     var editButton = document.createElement("input");
     editButton.setAttribute("type", "image");
     editButton.setAttribute("src", "edit.gif");
     editButton.setAttribute("id", "edit-" + uniqueID);
     editButton.onclick = function () { updateDefinition(uniqueID); };
-    
+
     cellText = document.createElement("td");
     cellText.appendChild(definitionText);
     cellText.appendChild(editButton);
     row.appendChild(cellText);
-    
+
     var deleteButton = document.createElement("input");
     deleteButton.setAttribute("type", "button");
     deleteButton.setAttribute("value", "Delete");
@@ -319,7 +319,7 @@ function addEntry(aId, aWord, aDefinition) {
     cell = document.createElement("td");
     cell.appendChild(deleteButton);
     row.appendChild(cell);
-    
+
     document.getElementById("dictionaryList").appendChild(row);
 }
 
@@ -332,11 +332,11 @@ function deleteEntryFromList() {
     }else{
     	renderMessage("Dictionary entry deleted successfully!", true);
     }
-    
+
     var rowToDelete = document.getElementById(DICT_PREFIX + deleteID);
     var dictionaryList = document.getElementById("dictionaryList");
     dictionaryList.removeChild(rowToDelete);
-    
+
     updateDictionaryManagementServletVisibility();
 }
 
@@ -357,7 +357,7 @@ function sortedEntryList() {
     	var unsortedRow = list[i];
     	dictionaryList.removeChild(unsortedRow);
     }
-    
+
    var dictionaryEntries = xmlHttp.responseXML.getElementsByTagName("dict");
    for(var j=0; j < dictionaryEntries.length; j++){
    		var dictionary = dictionaryEntries.item(j).childNodes;
@@ -375,7 +375,7 @@ function sortedEntryList() {
    		}
    		addEntry(aId, aWord, aDefinition);
     }
-    
+
     updateDictionaryManagementServletVisibility();
 }
 
@@ -391,7 +391,7 @@ function createHeaderCellWithText(text, sortFunction, position) {
     cell.style.fontWeight = "bold";
     cell.style.color = "black";
     cell.style.textDecoration = "underline";
-    
+
     var sortButton = document.createElement("input");
     sortButton.setAttribute("type", "image");
     sortButton.setAttribute("src", "select_next.gif");
@@ -440,7 +440,7 @@ function renderMessage(message, isValid){
 
 <body onLoad="sortEntry(0)">
   <h1>Dictionary List</h1>
-  
+
   <form action="#">
     <table width="80%" border="0">
         <tr>
@@ -456,7 +456,7 @@ function renderMessage(message, isValid){
             </td>
         </tr>
         <tr>
-        	<td><span style="font-weight:bold;">Search:</span><input type="text" id="search_text"/></td>
+        	<td><span style="font-weight:bold;">Search Word:</span><input type="text" id="search_text"/></td>
             <td>
                 <input type="button" value="Search" onclick="searchEntries();"/>
             </td>
@@ -467,7 +467,7 @@ function renderMessage(message, isValid){
   <span id="messageSpan" style="display:none;"></span>
   <span id="dictionaryListSpan" style="display:none;">
   <h2>All Dictionary Listing:</h2>
-  
+
   <table border="1" width="80%">
   	<thead id="headList"></thead>
     <tbody id="dictionaryList"></tbody>
